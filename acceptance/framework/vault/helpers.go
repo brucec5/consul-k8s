@@ -225,7 +225,7 @@ path %q {
 func ConfigurePKICertificatesForConnectInjectWebhook(t *testing.T,
 	vaultClient *vapi.Client, consulReleaseName, ns, datacenter string,
 	maxTTL string) string {
-	componentServiceAccountName := fmt.Sprintf("%s-consul-%s", consulReleaseName, "server")
+	componentServiceAccountName := fmt.Sprintf("%s-consul-%s", consulReleaseName, "connect-injector")
 	allowedDomains := fmt.Sprintf("%s.consul,%s,%s.%s,%s.%s.svc", datacenter,
 		componentServiceAccountName, componentServiceAccountName, ns, componentServiceAccountName, ns)
 	params := map[string]interface{}{
