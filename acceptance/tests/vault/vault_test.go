@@ -41,7 +41,7 @@ func TestVault(t *testing.T) {
 
 	bootstrapToken := vault.ConfigureACLTokenVaultSecret(t, vaultClient, "bootstrap")
 
-	serverPolicies := "gossip,connect-ca-dc1,server-cert-dc1,bootstrap-token,connect-webhook-cert-dc1"
+	serverPolicies := "gossip,connect-ca-dc1,server-cert-dc1,bootstrap-token"
 	if cfg.EnableEnterprise {
 		serverPolicies += ",license"
 	}
@@ -55,6 +55,9 @@ func TestVault(t *testing.T) {
 	pathForConnectInjectWebookCerts :=
 		vault.ConfigurePKICertificatesForConnectInjectWebhook(t, vaultClient,
 			consulReleaseName, ns, "dc1", "1h")
+	pathForControllerWebookCerts :=
+		vault.ConfigurePKICertificatesForControllerWebhook(t, vaultClient,
+			consulReleaseName, ns, "dc1", "1h")
 
 	vaultCASecret := vault.CASecretName(vaultReleaseName)
 
@@ -67,6 +70,7 @@ func TestVault(t *testing.T) {
 		"connectInject.replicas":           "1",
 		"connectInject.tlsCert.secretName": pathForConnectInjectWebookCerts,
 		"controller.enabled":               "true",
+		"controller.tlsCert.secretName":    pathForControllerWebookCerts,
 
 		"global.secretsBackend.vault.enabled":              "true",
 		"global.secretsBackend.vault.consulServerRole":     "server",
